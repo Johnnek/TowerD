@@ -25,8 +25,6 @@ int CheckMouse();
 /* game.exe updater.exe notice.txt tips.txt data.sah data.saf */
 
 GAMESTATE GameState = TITELNEW;
-GAMESTATE GameState = TITELSAFED;
-
 
 void SDLCleanup(SDL_Texture* tmp, SDL_Window *tmp2, SDL_Renderer *tmp3);
 void SetDebugPrivilege();
