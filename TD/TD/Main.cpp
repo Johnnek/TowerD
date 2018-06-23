@@ -32,7 +32,6 @@ void SetDebugPrivilege();
 
 int main()
 {
-
 	char dllpath[256] = { 0 };
 	GetCurrentDirectory(255, dllpath);
 
@@ -57,15 +56,14 @@ int main()
 	}
 
 	//
-	// Fenster erstellen grösse 800 x 600 mit 32 bit für vollbild SDL_FULLSCREEN hinzufügen
+	// Fenster erstellen grösse 1024 x 580 mit 32 bit für vollbild SDL_FULLSCREEN hinzufügen
 
 	int screenX = GetSystemMetrics(SM_CXSCREEN);
 	int screenY = GetSystemMetrics(SM_CYSCREEN);
 
-	SDL_Window * Win = SDL_CreateWindow("TowerD", screenX / 2 - 512, screenY / 2 - 290, 1024, 580, SDL_WINDOW_SHOWN);
+	SDL_Window * Win = SDL_CreateWindow("TowerD", screenX / 2 - 512, screenY / 2 - 290, 1024, 580, SDL_WINDOW_SHOWN );
 
 	SetForegroundWindow(FindWindow(0, "TowerD"));
-
 
 	if (!Win)
 	{
