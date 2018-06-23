@@ -72,7 +72,7 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <LinkIncremental>true</LinkIncremental>
     <LibraryPath>C:\SDL2\SDL2_image-2.0.1\lib\x86;C:\SDL2\SDL2-2.0.5\lib\x86;$(LibraryPath)</LibraryPath>
-    <IncludePath>C:\SDL2\SDL2-2.0.5\include;C:\SDL2\SDL2_image-2.0.1\include;$(IncludePath)</IncludePath>
+    <IncludePath>C:\SDL2\SDL2_image-2.0.1\include;C:\SDL2\SDL2_image-2.0.1\include;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <LinkIncremental>true</LinkIncremental>
