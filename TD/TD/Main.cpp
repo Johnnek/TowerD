@@ -1,18 +1,14 @@
 ﻿#include <iostream>
 #include <Windows.h>
-#ifdef WIN32
-#undef main
+
+
 #pragma comment(lib, "SDL2.lib")
-#pragma comment(lib, "SDL2main.lib")
+//#pragma comment(lib, "SDL2main.lib")
 #pragma comment(lib, "SDL2_image.lib")
 #include <SDL.h>
+//#include <SDL_main.h>
 #include <SDL_image.h>
-#else
-#include <SDL/SDL.h>
-#endif
-#ifdef _WIN32
-#undef main
-#endif 
+
 
 enum GAMESTATE { TITLENEW, TITLESAFED, TITLEOPTIONS } GameState;
 
@@ -21,7 +17,7 @@ void SDLCleanup(SDL_Texture* tmp, SDL_Window *tmp2, SDL_Renderer *tmp3);
 
 int main()
 {
-	// SDL mit dem Grafiksystem Initialisieren
+	// SDL mit dem Grafiksystem Initialisierenx
 	if (SDL_Init(SDL_INIT_EVERYTHING) == -1)
 	{
 		// Fehler Initialisierung fehlgeschlagen
@@ -63,7 +59,7 @@ int main()
 	char maindirectory[256] = { 0 };
 	char titelscreen[256] = { 0 };
 
-	GetCurrentDirectory(255, maindirectory);
+	GetCurrentDirectoryA(255, maindirectory);
 
 	strcpy(titelscreen, maindirectory);
 
