@@ -113,7 +113,7 @@ int main()
 	{
 		// Fehler!
 		std::cerr << SDL_GetError();
-		MessageBox(0, titeldirectory, titeldirectory, MB_OK);
+		MessageBox(0, saveddirectory, saveddirectory, MB_OK);
 		return -1;
 	}
 
@@ -121,15 +121,23 @@ int main()
 	SDL_Texture* titeltex = SDL_CreateTextureFromSurface(ren, image);
 	SDL_Texture* savedtex = SDL_CreateTextureFromSurface(ren, imagesaved);
 
-	if (!image)
+	if (!titeltex)
 	{
 		// Fehler!
 		std::cerr << SDL_GetError();
 		MessageBox(0, titeldirectory, titeldirectory, MB_OK);
 		return -1;
 	}
+	if (!savedtex)
+	{
+		// Fehler!
+		std::cerr << SDL_GetError();
+		MessageBox(0, saveddirectory, saveddirectory, MB_OK);
+		return -1;
+	}
 
 	SDL_FreeSurface(image);
+	SDL_FreeSurface(imagesaved);
 
 	bool rungame = true;
 
