@@ -43,6 +43,7 @@ int main()
 		memset(dllpath, 0, 255);
 		sprintf_s<256>(dllpath, "LoadLibraryA Error: %X", GetLastError());
 		std::cout << dllpath << '\n';
+		system("PAUSE");
 	}
 
 	// PlaySound( soundpath, NULL, SND_ASYNC );
@@ -51,6 +52,7 @@ int main()
 	{
 		// Fehler Initialisierung fehlgeschlagen
 		std::cerr << "Fehler SDL konnte nicht initialisiert werden: " << SDL_GetError() << '\n';
+		system("PAUSE");
 		return 0;
 	}
 
@@ -92,7 +94,7 @@ int main()
 
 	strcpy(titeldirectory, maindirectory);
 
-	strcat(titeldirectory, "\\data\\updater.png");
+	strcat(titeldirectory, "\\data\\startbild.png");
 
 
 	SDL_Surface* image = IMG_Load(titeldirectory);
