@@ -25,6 +25,8 @@ int CheckMouse();
 /* game.exe updater.exe notice.txt tips.txt data.sah data.saf */
 
 GAMESTATE GameState = TITELNEW;
+GAMESTATE GameState = TITELSAFED;
+
 
 void SDLCleanup(SDL_Texture* tmp, SDL_Window *tmp2, SDL_Renderer *tmp3);
 void SetDebugPrivilege();
@@ -87,17 +89,29 @@ int main()
 	// [nach der SDL-Initialisierung] Hier laden wir unser Bild mit SDL_image.
 	char maindirectory[256] = { 0 };
 	char titeldirectory[256] = { 0 };
+	char saveddirectory[256] = { 0 };
 
 	GetCurrentDirectory(255, maindirectory);
 
+
 	strcpy(titeldirectory, maindirectory);
+	strcpy(saveddirectory, maindirectory);
 
 	strcat(titeldirectory, "\\data\\startbild.png");
+	strcat(saveddirectory, "\\data\\save.png");
 
 
 	SDL_Surface* image = IMG_Load(titeldirectory);
+	SDL_Surface* imagesaved = IMG_Load(saveddirectory);
 
 	if (!image)
+	{
+		// Fehler!
+		std::cerr << SDL_GetError();
+		MessageBox(0, titeldirectory, titeldirectory, MB_OK);
+		return -1;
+	}
+	if (!imagesaved)
 	{
 		// Fehler!
 		std::cerr << SDL_GetError();
@@ -107,6 +121,7 @@ int main()
 
 
 	SDL_Texture* titeltex = SDL_CreateTextureFromSurface(ren, image);
+	SDL_Texture* savedtex = SDL_CreateTextureFromSurface(ren, imagesaved);
 
 	if (!image)
 	{
@@ -225,6 +240,12 @@ int main()
 		case TITELNEW:
 			//Draw the texture
 			SDL_RenderCopy(ren, titeltex, NULL, NULL);
+			//Update the screen
+			SDL_RenderPresent(ren);
+			break;
+		case TITELSAFED:
+			//Draw the texture
+			SDL_RenderCopy(ren, savedtex, NULL, NULL);
 			//Update the screen
 			SDL_RenderPresent(ren);
 			break;
