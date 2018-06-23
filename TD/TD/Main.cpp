@@ -102,18 +102,11 @@ int main()
 	SDL_Surface* image = IMG_Load(titeldirectory);
 	SDL_Surface* imagesaved = IMG_Load(saveddirectory);
 
-	if (!image)
+	if ( !image || !imagesaved )
 	{
 		// Fehler!
 		std::cerr << SDL_GetError();
-		MessageBox(0, titeldirectory, titeldirectory, MB_OK);
-		return -1;
-	}
-	if (!imagesaved)
-	{
-		// Fehler!
-		std::cerr << SDL_GetError();
-		MessageBox(0, saveddirectory, saveddirectory, MB_OK);
+		MessageBox(0, titeldirectory, saveddirectory, MB_OK);
 		return -1;
 	}
 
@@ -121,18 +114,11 @@ int main()
 	SDL_Texture* titeltex = SDL_CreateTextureFromSurface(ren, image);
 	SDL_Texture* savedtex = SDL_CreateTextureFromSurface(ren, imagesaved);
 
-	if (!titeltex)
+	if ( !titeltex || !savedtex )
 	{
 		// Fehler!
 		std::cerr << SDL_GetError();
-		MessageBox(0, titeldirectory, titeldirectory, MB_OK);
-		return -1;
-	}
-	if (!savedtex)
-	{
-		// Fehler!
-		std::cerr << SDL_GetError();
-		MessageBox(0, saveddirectory, saveddirectory, MB_OK);
+		MessageBox(0, titeldirectory, saveddirectory, MB_OK);
 		return -1;
 	}
 
