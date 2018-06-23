@@ -18,7 +18,7 @@
 #undef main
 #endif 
 
-enum GAMESTATE { TITELNEW, TITELSAFED, PLAYHOVER, REGISTERHOVER, OPTIONSHOVER };
+enum GAMESTATE { TITELNEW, TITELSAFED, TITELOPTION, TITELEND };
 void HandleKeyboardInput(SDL_Keysym key, bool keydown);
 int CheckMouse();
 
@@ -88,42 +88,54 @@ int main()
 	char maindirectory[256] = { 0 };
 	char titeldirectory[256] = { 0 };
 	char saveddirectory[256] = { 0 };
+	char optiondirectory[256] = { 0 };
+	char enddirectory[256] = { 0 };
 
 	GetCurrentDirectory(255, maindirectory);
 
 
 	strcpy(titeldirectory, maindirectory);
 	strcpy(saveddirectory, maindirectory);
+	strcpy(optiondirectory, maindirectory);
+	strcpy(enddirectory, maindirectory);
 
 	strcat(titeldirectory, "\\data\\startbild.png");
 	strcat(saveddirectory, "\\data\\save.png");
+	strcat(optiondirectory, "\\data\\options.png");
+	strcat(enddirectory, "\\data\\end.png");
 
 
 	SDL_Surface* image = IMG_Load(titeldirectory);
 	SDL_Surface* imagesaved = IMG_Load(saveddirectory);
+	SDL_Surface* imageoption = IMG_Load(optiondirectory);
+	SDL_Surface* imageend = IMG_Load(enddirectory);
 
-	if ( !image || !imagesaved )
+	if ( !image || !imagesaved || !imageoption || !imageend)
 	{
 		// Fehler!
 		std::cerr << SDL_GetError();
-		MessageBox(0, titeldirectory, saveddirectory, MB_OK);
+		MessageBox(0, titeldirectory, saveddirectory, MB_OK); // Mach mal feddich du Jude
 		return -1;
 	}
 
 
 	SDL_Texture* titeltex = SDL_CreateTextureFromSurface(ren, image);
 	SDL_Texture* savedtex = SDL_CreateTextureFromSurface(ren, imagesaved);
+	SDL_Texture* optiontex = SDL_CreateTextureFromSurface(ren, imageoption);
+	SDL_Texture* endtex = SDL_CreateTextureFromSurface(ren, imageend);
 
-	if ( !titeltex || !savedtex )
+	if ( !titeltex || !savedtex || !imageoption || !imageend)
 	{
 		// Fehler!
 		std::cerr << SDL_GetError();
-		MessageBox(0, titeldirectory, saveddirectory, MB_OK);
+		MessageBox(0, titeldirectory, saveddirectory, MB_OK); // same du Mongo
 		return -1;
 	}
 
 	SDL_FreeSurface(image);
 	SDL_FreeSurface(imagesaved);
+	SDL_FreeSurface(imageoption);
+	SDL_FreeSurface(imageend);
 
 	bool rungame = true;
 
@@ -241,6 +253,18 @@ int main()
 			//Update the screen
 			SDL_RenderPresent(ren);
 			break;
+		case TITELOPTION:
+			//Draw the texture
+			SDL_RenderCopy(ren, optiontex, NULL, NULL);
+			//Update the screen
+			SDL_RenderPresent(ren);
+			break;
+		case TITELEND:
+			//Draw the texture
+			SDL_RenderCopy(ren, endtex, NULL, NULL);
+			//Update the screen
+			SDL_RenderPresent(ren);
+			break;
 		default:
 			//Draw the texture
 			SDL_RenderCopy(ren, titeltex, NULL, NULL);
@@ -274,9 +298,20 @@ void HandleKeyboardInput(SDL_Keysym key, bool keydown)
 		switch (key.scancode)
 		{
 		case SDL_SCANCODE_W:
-			if( GameState == TITELSAFED )
+			switch (GameState)
 			{
-			GameState = TITELNEW;
+			case TITELNEW:
+				GameState = TITELEND;
+				break;
+			case TITELSAFED:
+				GameState = TITELNEW;
+				break;
+			case TITELOPTION:
+				GameState = TITELSAFED;
+				break;
+			case TITELEND:
+				GameState = TITELOPTION;
+				break;
 			}
 			std::cout << "w pressed\n";
 			break;
@@ -284,9 +319,20 @@ void HandleKeyboardInput(SDL_Keysym key, bool keydown)
 			std::cout << "A pressed\n";
 			break;
 		case SDL_SCANCODE_S:
-			if (GameState == TITELNEW)
+			switch (GameState)
 			{
+			case TITELNEW:
 				GameState = TITELSAFED;
+				break;
+			case TITELSAFED:
+				GameState = TITELOPTION;
+				break;
+			case TITELOPTION:
+				GameState = TITELEND;
+				break;
+			case TITELEND:
+				GameState = TITELNEW;
+				break;
 			}
 			std::cout << "S pressed\n";
 			break;
