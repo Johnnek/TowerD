@@ -26,7 +26,7 @@ int CheckMouse();
 
 GAMESTATE GameState = TITELNEW;
 
-void SDLCleanup(SDL_Texture* tmp, SDL_Window *tmp2, SDL_Renderer *tmp3);
+void SDLCleanup(SDL_Texture* tmptx, SDL_Texture* tmptx2, SDL_Texture* tmptx3, SDL_Texture* tmptx4, SDL_Window *tmp2, SDL_Renderer *tmp3);
 void SetDebugPrivilege();
 
 
@@ -128,7 +128,7 @@ int main()
 	{
 		// Fehler!
 		std::cerr << SDL_GetError();
-		MessageBox(0, titeldirectory, saveddirectory, MB_OK); // same du Mongo
+		MessageBox(0, titeldirectory, saveddirectory, MB_OK);
 		return -1;
 	}
 
@@ -279,14 +279,18 @@ int main()
 
 	} // Spiel beendet
 
-	SDLCleanup(titeltex, Win, ren);
+	SDLCleanup(titeltex, optiontex, savedtex, Win, endtex, ren );
+
 	SDL_Quit();
 	return 0;
 }
 
-void SDLCleanup(SDL_Texture* tmp, SDL_Window *tmp2, SDL_Renderer *tmp3)
+void SDLCleanup(SDL_Texture* tmptx, SDL_Texture* tmptx2, SDL_Texture* tmptx3, SDL_Texture* tmptx4, SDL_Window *tmp2, SDL_Renderer *tmp3)
 {
-	SDL_DestroyTexture(tmp);
+	SDL_DestroyTexture(tmptx);
+	SDL_DestroyTexture(tmptx2);
+	SDL_DestroyTexture(tmptx3);
+	SDL_DestroyTexture(tmptx4);
 	SDL_DestroyRenderer(tmp3);
 	SDL_DestroyWindow(tmp2);
 }
@@ -375,7 +379,7 @@ int CheckMouse()
 {
 	RECT wd = { 0 };
 	POINT mouse = { 0 };
-
+	
 	//GetWindow
 	GetWindowRect(FindWindow(0, "Shaiya Mystra Launcher"), &wd);
 
