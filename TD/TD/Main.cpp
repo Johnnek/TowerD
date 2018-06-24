@@ -18,7 +18,7 @@
 #undef main
 #endif 
 
-enum GAMESTATE { TITELNEW, TITELSAFED, TITELOPTION, TITELEND };
+enum GAMESTATE { TITELNEW, TITELSAFED, TITELOPTION, TITELEND, GAME_START };
 void HandleKeyboardInput(SDL_Keysym key, bool keydown);
 int CheckMouse();
 
@@ -26,7 +26,7 @@ int CheckMouse();
 
 GAMESTATE GameState = TITELNEW;
 
-void SDLCleanup(SDL_Texture* tmptx, SDL_Texture* tmptx2, SDL_Texture* tmptx3, SDL_Texture* tmptx4, SDL_Window *tmp2, SDL_Renderer *tmp3);
+void SDLCleanup(SDL_Texture* tmptx, SDL_Texture* tmptx2, SDL_Texture* tmptx3, SDL_Texture* tmptx4, SDL_Texture* tmptx5, SDL_Window *tmp2, SDL_Renderer *tmp3);
 void SetDebugPrivilege();
 
 
@@ -90,6 +90,7 @@ int main()
 	char saveddirectory[256] = { 0 };
 	char optiondirectory[256] = { 0 };
 	char enddirectory[256] = { 0 };
+	char ingamebuttonsdirectory[256] = { 0 };
 
 	GetCurrentDirectory(255, maindirectory);
 
@@ -98,19 +99,22 @@ int main()
 	strcpy(saveddirectory, maindirectory);
 	strcpy(optiondirectory, maindirectory);
 	strcpy(enddirectory, maindirectory);
+	strcpy(ingamebuttonsdirectory, maindirectory);
 
 	strcat(titeldirectory, "\\data\\startbild.png");
 	strcat(saveddirectory, "\\data\\save.png");
 	strcat(optiondirectory, "\\data\\options.png");
 	strcat(enddirectory, "\\data\\end.png");
+	strcat(ingamebuttonsdirectory, "\\data\\ingamebuttons.png");
 
 
 	SDL_Surface* image = IMG_Load(titeldirectory);
 	SDL_Surface* imagesaved = IMG_Load(saveddirectory);
 	SDL_Surface* imageoption = IMG_Load(optiondirectory);
 	SDL_Surface* imageend = IMG_Load(enddirectory);
+	SDL_Surface* imgbuttons = IMG_Load(ingamebuttonsdirectory);
 
-	if ( !image || !imagesaved || !imageoption || !imageend)
+	if ( !image || !imagesaved || !imageoption || !imageend || !imgbuttons )
 	{
 		// Fehler!
 		std::cerr << SDL_GetError();
@@ -118,13 +122,13 @@ int main()
 		return -1;
 	}
 
-
 	SDL_Texture* titeltex = SDL_CreateTextureFromSurface(ren, image);
 	SDL_Texture* savedtex = SDL_CreateTextureFromSurface(ren, imagesaved);
 	SDL_Texture* optiontex = SDL_CreateTextureFromSurface(ren, imageoption);
 	SDL_Texture* endtex = SDL_CreateTextureFromSurface(ren, imageend);
+	SDL_Texture* btntex = SDL_CreateTextureFromSurface(ren, imgbuttons);
 
-	if ( !titeltex || !savedtex || !imageoption || !imageend)
+	if ( !titeltex || !savedtex || !optiontex || !endtex || !btntex )
 	{
 		// Fehler!
 		std::cerr << SDL_GetError();
@@ -136,6 +140,7 @@ int main()
 	SDL_FreeSurface(imagesaved);
 	SDL_FreeSurface(imageoption);
 	SDL_FreeSurface(imageend);
+	SDL_FreeSurface(imgbuttons);
 
 	bool rungame = true;
 
@@ -279,18 +284,19 @@ int main()
 
 	} // Spiel beendet
 
-	SDLCleanup(titeltex, optiontex, savedtex, Win, endtex, ren );
+	SDLCleanup(titeltex, optiontex, savedtex, endtex, btntex, Win, ren );
 
 	SDL_Quit();
 	return 0;
 }
 
-void SDLCleanup(SDL_Texture* tmptx, SDL_Texture* tmptx2, SDL_Texture* tmptx3, SDL_Texture* tmptx4, SDL_Window *tmp2, SDL_Renderer *tmp3)
+void SDLCleanup(SDL_Texture* tmptx, SDL_Texture* tmptx2, SDL_Texture* tmptx3, SDL_Texture* tmptx4, SDL_Texture* tmptx5, SDL_Window *tmp2, SDL_Renderer *tmp3)
 {
 	SDL_DestroyTexture(tmptx);
 	SDL_DestroyTexture(tmptx2);
 	SDL_DestroyTexture(tmptx3);
 	SDL_DestroyTexture(tmptx4);
+	SDL_DestroyTexture(tmptx5);
 	SDL_DestroyRenderer(tmp3);
 	SDL_DestroyWindow(tmp2);
 }
